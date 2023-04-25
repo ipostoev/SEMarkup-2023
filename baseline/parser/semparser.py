@@ -12,13 +12,11 @@ from allennlp.data.vocabulary import Vocabulary, DEFAULT_OOV_TOKEN
 from allennlp.models import Model
 from allennlp.modules.token_embedders.token_embedder import TokenEmbedder
 
-from .feedforward_classifier import FeedForwardClassifier
-from .dependency_classifier import DependencyClassifier
+from feedforward_classifier import FeedForwardClassifier
+from dependency_classifier import DependencyClassifier
 
-from .lemmatize_helper import LemmaRule, predict_lemma_from_rule
+from lemmatize_helper import LemmaRule, predict_lemma_from_rule
 
-
-@Model.register('morpho_syntax_semantic_parser')
 class MorphoSyntaxSemanticParser(Model):
     """
     Joint Morpho-Syntax-Semantic Parser.
@@ -31,36 +29,21 @@ class MorphoSyntaxSemanticParser(Model):
     def __init__(self,
                  vocab: Vocabulary,
                  embedder: TokenEmbedder,
-                 lemma_rule_classifier: Lazy[FeedForwardClassifier],
-                 pos_feats_classifier: Lazy[FeedForwardClassifier],
-                 depencency_classifier: Lazy[DependencyClassifier],
-                 semslot_classifier: Lazy[FeedForwardClassifier],
-                 semclass_classifier: Lazy[FeedForwardClassifier]):
+                 lemma_rule_classifier: FeedForwardClassifier,
+                 pos_feats_classifier: FeedForwardClassifier,
+                 depencency_classifier: DependencyClassifier,
+                 semslot_classifier: FeedForwardClassifier,
+                 semclass_classifier: FeedForwardClassifier):
         super().__init__(vocab)
 
         self.embedder = embedder
         embedding_dim = self.embedder.get_output_dim()
 
-        self.lemma_rule_classifier = lemma_rule_classifier.construct(
-            in_dim=embedding_dim,
-            n_classes=vocab.get_vocab_size("lemma_rule_labels"),
-        )
-        self.pos_feats_classifier = pos_feats_classifier.construct(
-            in_dim=embedding_dim,
-            n_classes=vocab.get_vocab_size("pos_feats_labels"),
-        )
-        self.dependency_classifier = depencency_classifier.construct(
-            in_dim=embedding_dim,
-            n_rel_classes=vocab.get_vocab_size("deprel_labels"),
-        )
-        self.semslot_classifier = semslot_classifier.construct(
-            in_dim=embedding_dim,
-            n_classes=vocab.get_vocab_size("semslot_labels"),
-        )
-        self.semclass_classifier = semclass_classifier.construct(
-            in_dim=embedding_dim,
-            n_classes=vocab.get_vocab_size("semclass_labels"),
-        )
+        self.lemma_rule_classifier = lemma_rule_classifier
+        self.pos_feats_classifier = pos_feats_classifier
+        self.dependency_classifier = depencency_classifier
+        self.semslot_classifier = semslot_classifier
+        self.semclass_classifier = semclass_classifier
 
     @override(check_signature=False)
     def forward(self,
@@ -222,4 +205,3 @@ class MorphoSyntaxSemanticParser(Model):
             "semslots": [semslots],
             "semclasses": [semclasses],
         }
-
