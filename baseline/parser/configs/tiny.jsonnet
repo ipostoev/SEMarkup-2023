@@ -1,8 +1,8 @@
 # Configuration file for parser.
 # See https://guide.allennlp.org/training-and-prediction#2 for guidance.
 {
-    "train_data_path": "data/train.conllu",
-    "validation_data_path": "data/val.conllu",
+    "train_data_path": "/content/semarkup/train_splitted.conllu",
+    "validation_data_path": "/content/semarkup/val_splitted.conllu",
     "dataset_reader": {
         "type": "compreno_ud_dataset_reader", # Use custom dataset reader.
         "token_indexers": {
