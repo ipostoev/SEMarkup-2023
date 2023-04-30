@@ -32,7 +32,7 @@ class MorphoSyntaxSemanticParser(Model):
                  lemma_rule_classifier: FeedForwardClassifier,
                  pos_feats_classifier: FeedForwardClassifier,
                  depencency_classifier: DependencyClassifier,
-                 semslot_classifier: FeedForwardClassifier,
+                 semslot_classifier: FeedForwardCRFClassifier,
                  semclass_classifier: FeedForwardClassifier):
         super().__init__(vocab)
 

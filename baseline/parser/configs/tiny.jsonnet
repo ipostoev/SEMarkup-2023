@@ -100,9 +100,9 @@
                 "should_log_learning_rate": true,
             }
         ],
-        "num_epochs": 30,
+        "num_epochs": 5,
         "validation_metric": "+Avg", # Track average score of all scores. '+' stands for 'higher - better'.
         "grad_clipping": 5.0, # Clip gradient if too high.
-        "cuda_device": 1, # GPU
+        "cuda_device": 0, # GPU
     }
 }
