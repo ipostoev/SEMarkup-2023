@@ -85,7 +85,7 @@ class FeedForwardCRFClassifier(Model):
     @override(check_signature=False)
     def forward(self, embeddings: Tensor, labels: Tensor = None, mask: Tensor = None) -> Dict[str, Tensor]:
         logits = self.classifier(embeddings)
-        loss = crf(logits, labels, mask=mask, reduction='mean')
+        loss = self.crf(logits, labels, mask=mask, reduction='mean')
         loss = -1 * loss
         preds = logits.argmax(-1)
 
