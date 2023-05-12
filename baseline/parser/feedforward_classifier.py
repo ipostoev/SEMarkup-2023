@@ -76,7 +76,7 @@ class FeedForwardCRFClassifier(Model):
             nn.Linear(in_dim, hid_dim),
             Activation.by_name(activation)(),
             nn.Dropout(dropout),
-            nn.Linear(hid_dim, n_classes)
+            nn.Linear(in_dim, n_classes)
         )
         self.crf = CRF(num_tags=n_classes, batch_first=True)
         self.criterion = nn.CrossEntropyLoss()
